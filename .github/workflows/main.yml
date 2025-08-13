@@ -1,0 +1,41 @@
+name: Approval
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      run_id: ${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Say Hello
+        run: echo "Hello, world!"
+
+      - name: Send approval request email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com  # Correct input parameter
+          server_port: 587  # Correct input parameter
+          username: eshwar.bashabathini88@gmail.com  # GitHub secret for your Gmail username
+          password: rqob tobv xdeq pscr  # GitHub secret for your Gmail app password
+          from: github-actions@example.com
+          to: manikanta@middlewaretalents.com
+          subject: 'Action needed: Approve deployment'
+          body: |
+            Hello Manikanta,
+
+            Please approve the deployment by clicking the link below and approving 
+            the deployment in the 'production' environment on GitHub Actions:
+
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Once approved, the deployment job will proceed automatically.
+
+            Thanks!
+
+
